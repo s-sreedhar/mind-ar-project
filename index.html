@@ -3,7 +3,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <script src="https://aframe.io/releases/1.6.0/aframe.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/mind-ar@1.2.5/dist/mindar-image-aframe.prod.js"></script>
-  <script src="https://unpkg.com/aframe-animation-mixer@6.0.4/dist/aframe-animation-mixer.min.js"></script>
 </head>
 <body>
   <a-scene mindar-image="imageTargetSrc: ironmantarget.mind" color-space="sRGB"
@@ -12,21 +11,32 @@
     device-orientation-permission-ui="enabled: false">
     <a-assets>
       <img id="card" src="ironman.webp" />
-      <a-asset-item id="avatarModel" src="trex.glb"></a-asset-item>
+      <video id="myVideo" src="video.mp4" preload="auto" loop crossorigin="anonymous"></video>
     </a-assets>
 
     <a-camera position="0 0 0" look-controls="enabled: false"></a-camera>
     <a-entity mindar-image-target="targetIndex: 0">
       <a-plane src="#card" position="0 0 0" height="0.552" width="1" rotation="0 0 0"></a-plane>
-      <a-gltf-model 
-        src="#avatarModel" 
-        position="0 0.3 0.15"
+
+      <a-video 
+        src="#myVideo" 
+        width="1" 
+        height="0.6" 
+        position="0 0.3 0.1" 
         rotation="0 0 0"
-        scale="0.20 0.28 0.20"
-        animation-mixer
-        animation="property: position; to: 0 0.4 0.15; dur: 1000; easing: easeInOutQuad; loop: true; dir: alternate">
-      </a-gltf-model>
+        autoplay="true"
+        loop="true"
+        muted="true">
+      </a-video>
     </a-entity>
   </a-scene>
+
+  <script>
+    const videoEl = document.querySelector('#myVideo');
+    const target = document.querySelector('[mindar-image-target]');
+
+    target.addEventListener('targetFound', () => videoEl.play());
+    target.addEventListener('targetLost', () => videoEl.pause());
+  </script>
 </body>
 </html>
